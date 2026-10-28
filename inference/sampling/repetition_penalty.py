@@ -22,6 +22,8 @@ def apply_repetition_penalty(
         unique_tokens = list(set(generated_tokens))
 
     for token_id in unique_tokens:
+        if token_id < 0 or token_id >= logits.size(-1):
+            continue
         token_logits = logits[..., token_id]
         logits[..., token_id] = torch.where(
             token_logits < 0,

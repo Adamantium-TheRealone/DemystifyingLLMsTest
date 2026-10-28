@@ -25,9 +25,9 @@ def autoregressive_generate(
 
     for _ in range(max_new_tokens):
         if kv_cache is not None:
-            # Prefill the prompt once, then decode one token at a time.  Passing
-            # the whole prefix after every update duplicates entries in the cache.
-            model_inputs = generated if kv_cache.get_seq_length() == 0 else generated[:, -1:]
+            # The cache owns the sequence history; each cached decoding step
+            # receives only the newly generated token.
+            model_inputs = generated[:, -1:]
             logits = model(model_inputs, kv_cache=kv_cache)
         else:
             logits = model(generated)

@@ -49,7 +49,7 @@ class Sampler:
         if self.temperature <= 0.0:
             return torch.argmax(logits, dim=-1)
         if self.temperature != 1.0:
-            probs = F.softmax(apply_temperature(logits, temperature=self.temperature), dim=-1)
+            probs = apply_temperature(logits, temperature=self.temperature)
         else:
             probs = F.softmax(logits, dim=-1)
 
